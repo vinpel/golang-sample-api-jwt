@@ -510,7 +510,7 @@ const docTemplate = `{
             "properties": {
                 "email": {
                     "type": "string",
-                    "example": "demo@exemple.net"
+                    "example": "demo@example.net"
                 },
                 "password": {
                     "type": "string",
@@ -523,7 +523,7 @@ const docTemplate = `{
             "properties": {
                 "email": {
                     "type": "string",
-                    "example": "demo@http://example.com/"
+                    "example": "demo@example.com"
                 },
                 "name": {
                     "type": "string",

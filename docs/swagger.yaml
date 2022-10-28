@@ -14,7 +14,7 @@ definitions:
   dto.TokenRequest:
     properties:
       email:
-        example: demo@exemple.net
+        example: demo@example.net
         type: string
       password:
         example: demo
@@ -23,7 +23,7 @@ definitions:
   dto.UserRequest:
     properties:
       email:
-        example: demo@http://example.com/
+        example: demo@example.com
         type: string
       name:
         example: John Doe
