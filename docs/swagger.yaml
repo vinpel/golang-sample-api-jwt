@@ -1,0 +1,344 @@
+basePath: /
+consumes:
+- application/json
+definitions:
+  auth.JWTTokens:
+    properties:
+      access_token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZpbmNlbnQiLCJ1c2FnZSI6ImFjY2VzcyB0b2tlbiIsImVtcHJlaW50ZSI6IlNKdWh3cGNLMmNrdjExIiwiZXhwIjoxNjY2OTU0MDcxfQ.2RZfxWOy6_zyBJ9oFtsxr4Y5Zuh79qhDxhEJppbey3o
+        type: string
+      refresh_token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZpbmNlbnQiLCJ1c2FnZSI6InJlZnJlc2ggdG9rZW4iLCJlbXByZWludGUiOiJTSnVod3BjSzJja3YxMSIsImV4cCI6MTY2ODI0NjQ3MX0.-Ga9cMnfN_6kNnYTsQCcF3FEbjXoaRmR4z4snJZYVbo
+        type: string
+    type: object
+  dto.TokenRequest:
+    properties:
+      email:
+        example: demo@exemple.net
+        type: string
+      password:
+        example: demo
+        type: string
+    type: object
+  dto.UserRequest:
+    properties:
+      email:
+        example: demo@http://example.com/
+        type: string
+      name:
+        example: John Doe
+        type: string
+      password:
+        example: demo
+        type: string
+      username:
+        example: john
+        type: string
+    type: object
+  models.User:
+    properties:
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      email:
+        type: string
+      empreinte:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      password:
+        type: string
+      updated_at:
+        type: string
+      username:
+        type: string
+    type: object
+host: localhost:8000
+info:
+  contact:
+    name: API Support
+    url: https://github.com/vinpel/golang-sample-api-jwt/issues
+  description: Sample API endpoint in golang
+  license:
+    name: MIT
+    url: https://fr.wikipedia.org/wiki/Licence_MIT
+  title: golang-sample-api-jwt
+  version: "1.0"
+paths:
+  /api/secured/ping:
+    get:
+      description: respond pong to a ping with a JWT Header
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - type: object
+            - properties:
+                message:
+                  type: string
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            allOf:
+            - type: object
+            - properties:
+                error:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - type: object
+            - properties:
+                error:
+                  type: string
+              type: object
+      security:
+      - JWTToken: []
+      summary: Ping
+      tags:
+      - Jwt token
+  /api/token/from-refresh:
+    post:
+      description: |-
+        Generate a new access and refresh token from an email/password
+        * Refresh token is valid 15 days
+        * Access token is valid 1 hour
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.JWTTokens'
+        "401":
+          description: Unauthorized
+          schema:
+            allOf:
+            - type: object
+            - properties:
+                error:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - type: object
+            - properties:
+                error:
+                  type: string
+              type: object
+      security:
+      - JWTToken: []
+      summary: GenerateTokenFromRefreshToken
+      tags:
+      - Jwt token
+  /api/token/from-user:
+    post:
+      description: |-
+        Generate a new  access and refresh token from a refresh token
+        Refresh token is requested  for this endpoint
+        * Refresh token is valid 15 days
+        * Access token is valid 1 hour
+      parameters:
+      - description: Identifiants
+        in: body
+        name: bodyParam
+        required: true
+        schema:
+          $ref: '#/definitions/dto.TokenRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.JWTTokens'
+        "401":
+          description: Unauthorized
+          schema:
+            allOf:
+            - type: object
+            - properties:
+                error:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - type: object
+            - properties:
+                error:
+                  type: string
+              type: object
+      summary: GenerateTokenFromUser
+      tags:
+      - Jwt token
+  /api/user/:
+    get:
+      description: Create a user account
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: 'Created : return data for the new user'
+          schema:
+            items:
+              $ref: '#/definitions/models.User'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - type: object
+            - properties:
+                error:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - type: object
+            - properties:
+                error:
+                  type: string
+              type: object
+      security:
+      - JWTToken: []
+      summary: GetUser
+      tags:
+      - User
+  /api/user/{id}:
+    get:
+      description: Create a user account
+      parameters:
+      - description: 'id '
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: 'Created : return data for the new user'
+          schema:
+            items:
+              $ref: '#/definitions/models.User'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - type: object
+            - properties:
+                error:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - type: object
+            - properties:
+                error:
+                  type: string
+              type: object
+      security:
+      - JWTToken: []
+      summary: GetUserById
+      tags:
+      - User
+  /api/user/register:
+    post:
+      description: Create a user account
+      parameters:
+      - description: Required data to create a user
+        in: body
+        name: bodyParam
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: 'Created : return data for the new user'
+          schema:
+            allOf:
+            - type: object
+            - properties:
+                email:
+                  type: string
+                user_id:
+                  type: string
+                username:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - type: object
+            - properties:
+                error:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - type: object
+            - properties:
+                error:
+                  type: string
+              type: object
+      summary: RegisterUser
+      tags:
+      - User
+produces:
+- application/json
+securityDefinitions:
+  JWTToken:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
