@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"log"
 	"net/http"
 
 	"vinpel/golang-sample-api-jwt/common/auth"
@@ -39,8 +40,10 @@ func GenerateTokenFromUser(context *gin.Context) {
 		context.Abort()
 		return
 	}
-	credentialError := user.CheckPassword(request.Password)
+	log.Println(request.Password)
+	credentialError := user.VerifyPassword(request.Password)
 	if credentialError != nil {
+		log.Println(credentialError)
 		context.JSON(http.StatusUnauthorized, gin.H{"error": "invalid credentials"})
 		context.Abort()
 		return

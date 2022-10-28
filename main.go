@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
+	"vinpel/golang-sample-api-jwt/common/controllers"
 	"vinpel/golang-sample-api-jwt/common/database"
 	"vinpel/golang-sample-api-jwt/common/middlewares"
-	"vinpel/golang-sample-api-jwt/controllers"
 	"vinpel/golang-sample-api-jwt/docs"
+	"vinpel/golang-sample-api-jwt/services/ping"
 	"vinpel/golang-sample-api-jwt/services/user"
 
 	"github.com/gin-gonic/gin"
@@ -70,7 +71,7 @@ func initRouter() *gin.Engine {
 
 		secured := api.Group("/secured").Use(middlewares.Auth())
 		{
-			secured.GET("/ping", controllers.Ping)
+			secured.GET("/ping", ping.Ping)
 		}
 	}
 	user.RegisterRoutes(api)

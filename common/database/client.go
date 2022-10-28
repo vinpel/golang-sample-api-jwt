@@ -2,7 +2,6 @@ package database
 
 import (
 	"log"
-
 	"vinpel/golang-sample-api-jwt/models"
 
 	"gorm.io/driver/mysql"
