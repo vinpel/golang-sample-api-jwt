@@ -190,7 +190,7 @@ gin.SetMode(gin.ReleaseMode)
 - [x] Add API endpoint to grab JWT tokens using user information email/passwod
 - [x] Add API endpoint to grab JWT tokens from a refresh token
 - [x] Add API **secure** endpoint to test the secure API (ping)
-- [ ] Change password storage to Argon 2 format
+- [x] Change password algorithm to Argon 2 
 - [ ] Add secure API to change the password (stay connected for other / disconnect)
 - [ ] Manage configuration  [https://github.com/spf13/viper](https://github.com/spf13/viper)
 

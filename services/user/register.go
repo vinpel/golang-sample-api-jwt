@@ -31,7 +31,8 @@ func RegisterUser(context *gin.Context) {
 		return
 	}
 	user.CreateFromQuery(&userRequest)
-	if err := user.HashPassword(user.Password); err != nil {
+
+	if err := user.CreatePassword(user.Password); err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		context.Abort()
 		return
