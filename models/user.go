@@ -63,7 +63,9 @@ func (user *User) VerifyPassword(providedPassword string) error {
 		return err
 	}
 
-	log.Printf("Match: %v\n", match)
+	if !match {
+		return fmt.Errorf("invalid password")
+	}
 
 	return nil
 }
