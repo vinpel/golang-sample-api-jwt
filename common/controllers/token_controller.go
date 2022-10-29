@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"log"
 	"net/http"
 
 	"vinpel/golang-sample-api-jwt/common/auth"
@@ -34,17 +33,16 @@ func GenerateTokenFromUser(context *gin.Context) {
 		return
 	}
 	// check if email exists and password is correct
-	record := database.Instance.Where("email = ?", request.Email).First(&user)
-	if record.Error != nil {
-		context.JSON(http.StatusUnauthorized, gin.H{"error": record.Error.Error()})
+	result := database.Instance.Where("email = ?", request.Email).First(&user)
+	if result.Error != nil {
+		context.JSON(http.StatusUnauthorized, gin.H{"error": result.Error.Error()})
 		context.Abort()
 		return
 	}
-	log.Println(request.Password)
+
 	credentialError := user.VerifyPassword(request.Password)
 	if credentialError != nil {
-		log.Println(credentialError)
-		context.JSON(http.StatusUnauthorized, gin.H{"error": "invalid credentials"})
+		context.JSON(http.StatusUnauthorized, gin.H{"error": credentialError.Error()})
 		context.Abort()
 		return
 	}
