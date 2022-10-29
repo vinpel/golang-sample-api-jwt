@@ -324,6 +324,88 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/user/change-password": {
+            "post": {
+                "description": "Change the password of the user",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "ChangeUserPassword",
+                "parameters": [
+                    {
+                        "description": "new and old password",
+                        "name": "bodyParam",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user.changePasswordRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "type": "object"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "sucess": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "type": "object"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "type": "object"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/api/user/register": {
             "post": {
                 "description": "Create a user account",
@@ -510,7 +592,7 @@ const docTemplate = `{
             "properties": {
                 "email": {
                     "type": "string",
-                    "example": "demo@example.net"
+                    "example": "demo@example.com"
                 },
                 "password": {
                     "type": "string",
@@ -568,6 +650,27 @@ const docTemplate = `{
                 },
                 "username": {
                     "type": "string"
+                }
+            }
+        },
+        "user.changePasswordRequest": {
+            "type": "object",
+            "properties": {
+                "actual-password": {
+                    "type": "string",
+                    "example": "demo"
+                },
+                "logout-all-sesssion": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "new-password": {
+                    "type": "string",
+                    "example": "demo2"
+                },
+                "username": {
+                    "type": "string",
+                    "example": "john"
                 }
             }
         }

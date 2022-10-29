@@ -14,7 +14,7 @@ definitions:
   dto.TokenRequest:
     properties:
       email:
-        example: demo@example.net
+        example: demo@example.com
         type: string
       password:
         example: demo
@@ -54,6 +54,21 @@ definitions:
       updated_at:
         type: string
       username:
+        type: string
+    type: object
+  user.changePasswordRequest:
+    properties:
+      actual-password:
+        example: demo
+        type: string
+      logout-all-sesssion:
+        example: true
+        type: boolean
+      new-password:
+        example: demo2
+        type: string
+      username:
+        example: john
         type: string
     type: object
 host: localhost:8000
@@ -285,6 +300,51 @@ paths:
       security:
       - JWTToken: []
       summary: GetUserById
+      tags:
+      - User
+  /api/user/change-password:
+    post:
+      description: Change the password of the user
+      parameters:
+      - description: new and old password
+        in: body
+        name: bodyParam
+        required: true
+        schema:
+          $ref: '#/definitions/user.changePasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - type: object
+            - properties:
+                message:
+                  type: string
+                sucess:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - type: object
+            - properties:
+                error:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - type: object
+            - properties:
+                error:
+                  type: string
+              type: object
+      summary: ChangeUserPassword
       tags:
       - User
   /api/user/register:

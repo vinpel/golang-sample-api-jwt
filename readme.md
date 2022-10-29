@@ -191,8 +191,9 @@ gin.SetMode(gin.ReleaseMode)
 - [x] Add API endpoint to grab JWT tokens from a refresh token
 - [x] Add API **secure** endpoint to test the secure API (ping)
 - [x] Change password algorithm to Argon 2 
-- [ ] Add secure API to change the password (stay connected for other / disconnect)
+- [X] Add secure API to change the password (stay connected for other / disconnect)
 - [ ] Manage configuration  [https://github.com/spf13/viper](https://github.com/spf13/viper)
+- [ ] Add tests with [ovh-venom](https://github.com/ovh/venom)
 
 
 See the [open issues](https://github.com/vinpel/golang-sample-api-jwt/issues) for a full list of proposed features (and known issues).
